@@ -1,0 +1,37 @@
+version: '3'
+
+networks:
+  frontend:
+    driver: 'bridge'
+  backend:
+    driver: 'bridge'
+
+services:
+  redis:
+    image: redis
+    expose:
+      - 6379
+
+# Manager acts as the Threadfix agent. Receives new requests, and queues them
+  manager:
+    build:
+      context: ./
+      dockerfile: ./docker/manager/Dockerfile
+    volumes:
+      - ./:/usr/local/app
+
+# Workers listen to the Redis queue and pick up new jobs
+  # Spin up as many worker pods as you need
+# worker will have the zap tool installed, and will contain any necessary python logic
+  # python logic should kick off the scan, then post the results when complete
+  worker:
+    build:
+      context: ./
+      dockerfile: ./docker/manager/Dockerfile
+    deploy:
+      mode: replicated
+      replicas: 1
+    volumes:
+      - ./:/usr/local/app
+    # Override the default command in the image; this command starts the worker and listens to the queue
+    command: ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
