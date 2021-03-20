@@ -33,5 +33,6 @@ services:
       replicas: 1
     volumes:
       - ./:/usr/local/app
+      - ./docker/manager/supervisord.conf:/etc/supervisord.conf
     # Override the default command in the image; this command starts the worker and listens to the queue
     command: ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
