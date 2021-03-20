@@ -30,3 +30,8 @@ You can set the number of threads per container in the supervisord.conf file.
 
 Ultimately control how many parallel scans can run by configuring how many pods to run (in docker-compose.yml) and how many threads per pod.
 
+
+## Watching it in action
+In your terminal tab, run ```docker-compose logs -f worker```. This will display container logs in real time
+
+In a second terminal tab, run ```docker-compose exec manager python MyProject.py```. You will see the results in the logs terminal.
