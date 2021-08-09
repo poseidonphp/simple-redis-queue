@@ -10,5 +10,8 @@ RUN pip install -r requirements.txt
 
 COPY ./docker/manager/supervisord.conf /etc/supervisord.conf
 
-# CMD will be agent that connects to threadfix
+# CMD: What command should your script manager perform?
+# Manager is responsible for loading items into the queue.
+#   Where do they come from? how do they get here?
+#   Using a placeholder of "tail -f requirements.txt" for now
 CMD ["tail", "-f", "requirements.txt"]
